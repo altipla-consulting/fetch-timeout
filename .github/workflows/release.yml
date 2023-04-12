@@ -1,0 +1,53 @@
+on: 
+  release:
+    types: [created]
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get the version
+      id: version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+
+    - name: Configure private packages
+      uses: altipla-consulting/setup-private-npm.actions@main
+      with:
+        npm-token: ${{ secrets.NPM_TOKEN }}
+
+    - name: Cache node modules
+      id: cache-npm
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          build-${{ env.cache-name }}-
+          build-
+
+    - name: Install deps
+      run: npm ci
+
+    - name: Lint
+      run: npm run lint
+
+    - name: Build
+      run: npm run lib
+
+    - name: Set version in code
+      run: npm version ${{ steps.version.outputs.VERSION }}
+
+    - name: Publish to NPM
+      run: npm publish

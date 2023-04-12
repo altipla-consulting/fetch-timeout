@@ -1,0 +1,32 @@
+{
+  "name": "@altipla/fetch-timeout",
+  "version": "1.1.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/altipla-consulting/fetch-timeout.git"
+  },
+  "author": "Altipla Consulting",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/altipla-consulting/fetch-timeout/issues"
+  },
+  "homepage": "https://github.com/altipla-consulting/fetch-timeout#readme",
+  "files": [
+    "src/index.ts",
+    "dist/index.js"
+  ],
+  "scripts": {
+    "lib": "tsc --declaration --esModuleInterop --outDir dist",
+    "lint": "tsc --noEmit && eslint --ext .ts src",
+    "fix": "eslint --fix --ext .ts src",
+    "test": ""
+  },
+  "devDependencies": {
+    "@altipla/eslint-config-ts": "^0.6.0",
+    "eslint": "^8.38.0",
+    "typescript": "^5.0.4"
+  }
+}
