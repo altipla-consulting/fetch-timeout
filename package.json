@@ -14,6 +14,9 @@
     "url": "https://github.com/altipla-consulting/fetch-timeout/issues"
   },
   "homepage": "https://github.com/altipla-consulting/fetch-timeout#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "src",
     "dist"
