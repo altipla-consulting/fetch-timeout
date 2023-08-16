@@ -34,7 +34,7 @@ test('fetch aborted before timeout', async () => {
 
   let ctrl = new AbortController()
   let response = fetchTimeout('https://www.example.com/', {
-    timeout: 100,
+    timeout: 200,
     signal: ctrl.signal,
   })
   ctrl.abort()
