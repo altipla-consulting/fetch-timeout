@@ -1,5 +1,12 @@
 
-import nodeFetch, { AbortError } from 'node-fetch'
+export class AbortError extends Error {
+  public type: string
+
+  constructor(message: string, type = 'aborted') {
+    super(message)
+    this.type = type
+  }
+}
 
 export async function fetchTimeout(request: RequestInfo, options?: RequestInit & { timeout?: number }): Promise<Response> {
   let ctrl = new AbortController()
@@ -7,7 +14,16 @@ export async function fetchTimeout(request: RequestInfo, options?: RequestInit &
   try {
     options?.signal?.addEventListener('abort', () => ctrl.abort())
 
-    let response = (globalThis.fetch || nodeFetch)(request, {
+    let fetch = globalThis.fetch
+    if (!fetch) {
+      fetch = (await import ('node-fetch')).default as any
+    }
+
+    if (ctrl.signal.aborted) {
+      throw new AbortError('The operation was aborted.')
+    }
+
+    let response = fetch(request, {
       ...options,
       signal: ctrl.signal,
     })
