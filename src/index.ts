@@ -15,9 +15,15 @@ export async function fetchTimeout(request: RequestInfo, options?: RequestInit &
     options?.signal?.addEventListener('abort', () => ctrl.abort())
 
     let fetch = globalThis.fetch
-    let nodeFetch = (await import ('node-fetch'))?.default
+    if (!fetch) {
+      fetch = (await import ('node-fetch')).default as any
+    }
 
-    let response = (fetch || nodeFetch)(request, {
+    if (ctrl.signal.aborted) {
+      throw new AbortError('The operation was aborted.')
+    }
+
+    let response = fetch(request, {
       ...options,
       signal: ctrl.signal,
     })
