@@ -30,14 +30,14 @@ test('fetch with timeout', async () => {
 })
 
 test('fetch aborted before timeout', async () => {
-  mockFetch(300)
+  mockFetch(200)
 
   let ctrl = new AbortController()
   let response = fetchTimeout('https://www.example.com/', {
-    timeout: 200,
+    timeout: 100,
     signal: ctrl.signal,
   })
-  ctrl.abort()
+  setTimeout(() => ctrl.abort(), 50) // Wait some time so node-fetch was actually imported before aborting.
 
   expect(response).rejects.toThrowError('The operation was aborted.')
 })
