@@ -18,7 +18,9 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.test.js",
+    "!dist/**/*.test.d.ts"
   ],
   "scripts": {
     "lib": "tsc --declaration --esModuleInterop --outDir dist",
