@@ -7,7 +7,7 @@ Implement timeout and cancellation on top of node-fetch or standard fetch.
 ## Install
 
 ```sh
-npm install fetch-timeout
+npm install @altipla/fetch-timeout
 ```
 
 
@@ -18,7 +18,9 @@ Replace any call to `fetch` with our helper `fetchTimeout`. Types are compatible
 ### With no timeout (normal fetch)
 
 ```ts
-let reply = await fetch('https://www.example.com/', {
+import { fetchTimeout } from '@altipla/fetch-timeout'
+
+let reply = await fetchTimeout('https://www.example.com/', {
   method: 'POST',
   body: '...',
   headers: { ... },
@@ -28,7 +30,9 @@ let reply = await fetch('https://www.example.com/', {
 ### With a timeout
 
 ```ts
-let reply = await fetch('https://www.example.com/', {
+import { fetchTimeout } from '@altipla/fetch-timeout'
+
+let reply = await fetchTimeout('https://www.example.com/', {
   method: 'POST',
   body: '...',
   headers: { ... },
@@ -39,11 +43,13 @@ let reply = await fetch('https://www.example.com/', {
 ### With a timeout and a cancel signal combined
 
 ```ts
+import { fetchTimeout } from '@altipla/fetch-timeout'
+
 let ctrl = new AbortController()
 
 abortButton.addEventListener('click', () => ctrl.abort())
 
-let reply = await fetch('https://www.example.com/', {
+let reply = await fetchTimeout('https://www.example.com/', {
   method: 'POST',
   body: '...',
   headers: { ... },
@@ -56,8 +62,10 @@ let reply = await fetch('https://www.example.com/', {
 ### Check if there was a timeout
 
 ```ts
+import { fetchTimeout } from '@altipla/fetch-timeout'
+
 try {
-  let reply = await fetch('https://www.example.com/', {
+  let reply = await fetchTimeout('https://www.example.com/', {
     timeout: 5000,
   })
 } catch (err: any) {
